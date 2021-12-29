@@ -1,0 +1,32 @@
+[server]
+Address = ":6109"
+#ServerRoot = "public"
+ServerAgent = "gzh_up_img_api"
+LogPath = "/tmp/log/gf-app/gzh_up_img_api"
+
+# Database.
+[database]
+link = "mysql:root:root@tcp(127.0.0.1:3306)/jstgs_image"
+debug = true
+# Database logger.
+[database.logger]
+Path = "/tmp/log/gf-app/sql"
+Level = "all"
+Stdout = true
+[gfcli]
+[[gfcli.gen.dao]]
+link = "mysql:root:root@tcp(127.0.0.1:3306)/jstgs_image"
+tables = ""
+
+[qiniu]
+domain = "https://qiniu.storage.heifengni.com"
+AccessKey = "_a84dBRWph1OoEYiGnFO7ZTJaFeHrf5ssjrCB4dT"
+SecretKey = "LJ-oWZiEWFoixk09cQJUWu2CGRv-rtOwfkkYsUHk"
+Bucket = "qiniu_storage"
+Region = "https://up-z0.qiniup.com"
+
+[gzh]
+appid="wx6c12f09296b8900e"
+appsecret="32177ebc8e8f50c22dfb5258a7576c9a"
+token="user_xxx"
+EncodingAESKey="h2hrih0JpqkNS5fpkRRH6NX7C74wQI681nLKSBdXs4b"
