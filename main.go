@@ -1,9 +1,10 @@
-package main
+package gzh_img_tool
 
 import (
 	"fmt"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gfile"
+	"github.com/gogf/guuid"
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	"github.com/silenceper/wechat/v2/officialaccount"
@@ -11,31 +12,34 @@ import (
 	"github.com/silenceper/wechat/v2/officialaccount/material"
 )
 
-
 //set GOARCH=amd64
 //set GOOS=linux
 //go build -o gzh_image_tool main.go
 
-
 //var gzhUrl string ="https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token="
-var appid = "wx6c12f09296b8900e"
-var appsecret = "32177ebc8e8f50c22dfb5258a7576c9a"
 
-func main() {
-	fmt.Println("开始运行->")
-
-	//dao.UserImage.OmitEmpty().OrderDesc("id")
-	img := "https://qiniu.storage.heifengni.com/tmp_3ece585eb1ef1339d03fb19c2111d0215e87e2538681369a.jpg"
-	savePath := "pinguo.png"
-	saveDir := "/webapp/img/gzh_img_tool/"
-	down(img,savePath)
-	upload(saveDir+savePath)
-	_ = gfile.Remove(saveDir+savePath)
+type GzhImgTool struct {
+	Appid     string
+	Appsecret string
+	TempDir   string // "/webapp/img/gzh_img_tool/"
+}
+func NewGzhImgTool(appid, appsecret, tempDir string) *GzhImgTool {
+	return &GzhImgTool{
+		Appid:     appid,
+		Appsecret: appsecret,
+		TempDir:   tempDir,
+	}
 }
 
-
-func upload(path string) string {
-	gzh := newOfficialAccount(appid, appsecret)
+func (g *GzhImgTool)HandleImg( url string) {
+	savePath := guuid.New().String() + "--.png"
+	saveDir := g.TempDir
+	down(url, savePath)
+	g.upload(saveDir + savePath)
+	_ = gfile.Remove(saveDir + savePath)
+}
+func (g *GzhImgTool)upload(path string) string {
+	gzh := newOfficialAccount(g.Appid, g.Appsecret)
 	u, err := gzh.addImg(path)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -43,6 +47,7 @@ func upload(path string) string {
 	}
 	return u
 }
+
 func down(url, path string) {
 	if r, err := g.Client().Get(url); err != nil {
 		panic(err)
@@ -52,10 +57,10 @@ func down(url, path string) {
 	}
 }
 
-
 type OffAcc struct {
 	*officialaccount.OfficialAccount
 }
+
 func newOfficialAccount(appid, secret string) *OffAcc {
 	wc := wechat.NewWechat()
 	cacheClient := cache.NewMemory()
@@ -75,7 +80,6 @@ func (oa *OffAcc) addImg(filename string) (url string, err error) {
 		return "", err
 	}
 	return u, nil
-
 }
 func (oa *OffAcc) addVideo(filename, title, introduction string) (url string, err error) {
 	_, u, err := oa.GetMaterial().AddVideo(filename, title, introduction)

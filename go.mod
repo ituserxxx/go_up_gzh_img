@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/gogf/gf v1.16.6
+	github.com/gogf/guuid v1.0.0
 	github.com/silenceper/wechat/v2 v2.1.0
 )
 
@@ -15,7 +16,8 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/gomodule/redigo v1.8.5 // indirect
+	github.com/gomodule/redigo v2.0.0+incompatible // indirect
+	github.com/google/uuid v1.1.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/grokify/html-strip-tags-go v0.0.0-20190921062105-daaa06bf1aaf // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
